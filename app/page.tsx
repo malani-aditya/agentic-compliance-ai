@@ -1,9 +1,11 @@
 import React from 'react'; 
- import type { PageProps } from './types/app'; 
+ import type { LayoutProps } from './layout'; 
+ import Dashboard from './components/Dashboard'; 
+ 
+ export interface PageProps extends LayoutProps { 
+   searchParams?: any; 
+ } 
  
  export default function HomePage({ params, searchParams }: PageProps) { 
-   return <div> 
-     <h1>Welcome to My App</h1> 
-     <p>Params: {JSON.stringify(params)}</p> 
-   </div>; 
+   return <Dashboard params={params} searchParams={searchParams} />; 
  }

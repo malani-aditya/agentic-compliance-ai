@@ -1,15 +1,10 @@
 import React from 'react'; 
+ import { DashboardLayout } from './components/DashboardLayout'; 
+ import { metadata as appMetadata } from './components/metadata'; 
  import { LayoutProps } from './types/app'; 
  
- // Optional: add metadata here 
- export const metadata = { 
-   title: 'My App', 
-   description: 'Description of my app', 
- }; 
+ export const metadata = appMetadata; 
  
  export default function RootLayout({ children, params }: LayoutProps) { 
-   // Pass params down if needed to nested layout/components 
-   return <html lang="en"> 
-     <body>{children}</body> 
-   </html>; 
+   return <DashboardLayout params={params}>{children}</DashboardLayout>; 
  }
