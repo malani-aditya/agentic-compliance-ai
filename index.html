@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Evidence Collection System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="app-title">Compliance Hub</h1>
+            </div>
+            <div class="header-right">
+                <div class="provider-selector">
+                    <label for="llm-provider" class="form-label">LLM Provider:</label>
+                    <select id="llm-provider" class="form-control provider-select">
+                        <option value="openai">OpenAI GPT-4</option>
+                        <option value="anthropic">Anthropic Claude</option>
+                        <option value="groq">Groq Llama</option>
+                        <option value="ollama">Ollama (Local)</option>
+                    </select>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <span class="user-name">John Doe</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li><button class="nav-link active" data-page="dashboard">Dashboard</button></li>
+                    <li><button class="nav-link" data-page="active-sessions">Active Sessions</button></li>
+                    <li><button class="nav-link" data-page="evidence-library">Evidence Library</button></li>
+                    <li><button class="nav-link" data-page="settings">Settings</button></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page active">
+                <div class="page-header">
+                    <h2>Compliance Checks Dashboard</h2>
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Total Checks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Automated</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filters-section">
+                    <div class="filter-controls">
+                        <input type="text" id="search-filter" class="form-control" placeholder="Search checks...">
+                        <select id="team-filter" class="form-control">
+                            <option value="">All Teams</option>
+                            <option value="IT">IT</option>
+                            <option value="Legal">Legal</option>
+                            <option value="Security">Security</option>
+                            <option value="Network">Network</option>
+                        </select>
+                        <select id="status-filter" class="form-control">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Approved">Approved</option>
+                        </select>
+                        <select id="area-filter" class="form-control">
+                            <option value="">All Areas</option>
+                            <option value="IT Security">IT Security</option>
+                            <option value="IT Operations">IT Operations</option>
+                            <option value="Privacy">Privacy</option>
+                            <option value="Security">Security</option>
+                            <option value="Network Security">Network Security</option>
+                        </select>
+                    </div>
+                    <div class="action-controls">
+                        <button id="start-collection-btn" class="btn btn--primary" disabled>Start Collection</button>
+                        <button class="btn btn--secondary">Schedule</button>
+                        <button class="btn btn--outline">Export</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="compliance-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Check Type</th>
+                                <th>Check Name</th>
+                                <th>Area</th>
+                                <th>Owner</th>
+                                <th>SPOC</th>
+                                <th>Task Status</th>
+                                <th>Status</th>
+                                <th>Team</th>
+                                <th>Automate</th>
+                                <th>Repetition</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compliance-table-body">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Active Sessions Page -->
+            <div id="active-sessions-page" class="page">
+                <div class="page-header">
+                    <h2>Evidence Collection Session</h2>
+                    <div class="session-info">
+                        <span class="session-checks">Selected Checks: <span id="selected-checks-count">0</span></span>
+                        <span class="estimated-time">Estimated Time: <span id="estimated-time">0 minutes</span></span>
+                    </div>
+                </div>
+
+                <div class="collection-interface">
+                    <div class="progress-section">
+                        <div class="overall-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="overall-progress"></div>
+                            </div>
+                            <span class="progress-text" id="overall-progress-text">0% Complete</span>
+                        </div>
+
+                        <div class="steps-container" id="steps-container">
+                            <!-- Progress steps will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="chat-section">
+                        <div class="chat-header">
+                            <h3>AI Assistant</h3>
+                            <div class="chat-controls">
+                                <button class="btn btn--sm btn--secondary" id="pause-btn">Pause</button>
+                                <button class="btn btn--sm btn--secondary" id="skip-btn">Skip Step</button>
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Chat messages will be populated by JavaScript -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chat-input-field" class="form-control" placeholder="Ask AI assistant or provide instructions...">
+                            <button class="btn btn--primary" id="send-chat-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evidence Library Page -->
+            <div id="evidence-library-page" class="page">
+                <div class="page-header">
+                    <h2>Evidence Library</h2>
+                    <div class="view-controls">
+                        <button class="btn btn--outline view-toggle active" data-view="grid">Grid</button>
+                        <button class="btn btn--outline view-toggle" data-view="list">List</button>
+                    </div>
+                </div>
+
+                <div class="evidence-grid" id="evidence-grid">
+                    <!-- Evidence items will be populated by JavaScript -->
+                </div>
+
+                <div class="batch-actions">
+                    <button class="btn btn--primary" id="batch-approve-btn">Approve Selected</button>
+                    <button class="btn btn--secondary" id="batch-reject-btn">Reject Selected</button>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings-page" class="page">
+                <div class="page-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h3>LLM Provider Configuration</h3>
+                        <div class="provider-config">
+                            <div class="form-group">
+                                <label class="form-label">Active Provider</label>
+                                <select class="form-control">
+                                    <option>OpenAI GPT-4</option>
+                                    <option>Anthropic Claude</option>
+                                    <option>Groq Llama</option>
+                                    <option>Ollama (Local)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">API Key</label>
+                                <input type="password" class="form-control" placeholder="sk-...">
+                            </div>
+                            <button class="btn btn--secondary">Test Connection</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Collection Preferences</h3>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" checked> Auto-approve evidence with high confidence
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox"> Send notifications on completion
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

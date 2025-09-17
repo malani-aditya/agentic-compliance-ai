@@ -1,0 +1,28 @@
+# The local environment name, used to identify the local environment within the project
+# This is used to generate the local database URL and other local environment variables
+PROJECT_ID = "your-project-id"
+
+[api]
+# Port to use for the API URL.
+port = 54321
+# Schemas to expose in your API. Tables, views and stored procedures in this schema will get API endpoints.
+# public and storage are always included.
+schemas = ["public", "storage", "graphql_public"]
+# Extra schemas to add to the search_path of every request.
+extra_search_path = ["public", "extensions"]
+# The maximum number of rows returns from a view, table, or stored procedure. Limits payload size.
+max_rows = 1000
+
+[db]
+# Port to use for the local database URL.
+port = 54322
+# The database major version to use. This has to be the same as your remote database's. Run `SHOW server_version;` on the remote database to check.
+major_version = 15
+
+[studio]
+# Port to use for Supabase Studio.
+port = 54323
+
+[inbucket]
+# Port to use for the local email testing server.
+port = 54324
