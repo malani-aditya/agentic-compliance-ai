@@ -1,0 +1,23 @@
+PROJECT_ID = "your-project-id"
+
+[api]
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 15
+
+[studio]
+port = 54323
+
+[inbucket]
+port = 54324
+
+[edge_functions]
+port = 54325
+
+[analytics]
+port = 54326
