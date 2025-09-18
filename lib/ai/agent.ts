@@ -201,7 +201,7 @@ export class ComplianceAgent {
         approach: 'manual',
         sources: ['google_drive'],
         file_patterns: [`*${check.check_name.replace(/\s+/g, '_')}*`],
-        validation_rules: check.validation_rules,
+        validation_rules: (check.validation_rules as Record<string, any>) || {},
         estimated_time: 600, // 10 minutes default
         confidence_score: 0.5
       }
