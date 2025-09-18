@@ -12,6 +12,25 @@ export type MemoryType = Database['public']['Enums']['memory_type']
 export type StepStatus = Database['public']['Enums']['step_status']
 export type ProviderType = Database['public']['Enums']['provider_type']
 
+export interface EvidenceValidation {
+  is_valid: boolean
+  validation_score: number
+  issues: ValidationIssue[]
+  metadata_completeness: number
+  content_analysis?: {
+    summary: string
+    key_findings: string[]
+    quality_score: number
+  }
+}
+
+export interface ValidationIssue {
+  type: 'error' | 'warning' | 'info'
+  message: string
+  field?: string
+  suggestion?: string
+}
+
 export interface ProgressStep {
   [key: string]: string | number | boolean | null | ProgressStep[] | Record<string, any> | undefined
   id: string
@@ -77,23 +96,6 @@ export interface AIReasoning {
     level: 'low' | 'medium' | 'high'
     factors: string[]
     mitigation: string[]
-  }
-}
-
-export interface EvidenceValidation {
-  is_valid: boolean
-  validation_score: number
-  issues: Array<{
-    type: 'error' | 'warning' | 'info'
-    message: string
-    field?: string
-    suggestion?: string
-  }>
-  metadata_completeness: number
-  content_analysis?: {
-    summary: string
-    key_findings: string[]
-    quality_score: number
   }
 }
 
@@ -176,6 +178,68 @@ export interface ComplianceCheckFilters {
     start: string
     end: string
   }
+}
+
+export interface EvidenceSession {
+  id: string
+  session_name?: string
+  compliance_check_ids: string[]
+  admin_user_id: string
+  status: 'pending' | 'planning' | 'collecting' | 'reviewing' | 'completed' | 'error' | 'cancelled'
+  llm_provider: ProviderType
+  progress_steps: ProgressStep[] | Record<string, any>
+  chat_messages: ChatMessage[] | Record<string, any>
+  ai_reasoning_log: AIReasoning[] | Record<string, any>
+  collection_strategy: Record<string, any>
+  user_preferences: Record<string, any>
+  error_log: Record<string, any>
+  metrics: Record<string, any>
+  started_at?: string | null
+  completed_at?: string | null
+  estimated_duration?: string | null
+  actual_duration?: string | null
+  total_evidence_items: number
+  successful_collections: number
+  failed_collections: number
+  created_at: string
+  updated_at: string
+}
+export interface EvidenceItem {
+  id: string
+  session_id: string
+  check_id: string
+  evidence_type: 'file' | 'screenshot' | 'api_response' | 'manual_entry'
+  source_system: string
+  source_path?: string
+  original_filename?: string
+  stored_filename?: string
+  file_size?: number
+  file_hash?: string
+  mime_type?: string
+  storage_path?: string
+  metadata?: Record<string, any>
+  content_preview?: string
+  ai_analysis?: Record<string, any>
+  collection_context: Record<string, any>
+  validation_status: 'pending' | 'valid' | 'invalid' | 'warning'
+  validation_details: Record<string, any>
+  validation_errors: string[]
+  review_status: 'pending' | 'approved' | 'rejected' | 'requires_changes'
+  review_notes?: string | null
+  reviewer_id?: string | null
+  review_history: Record<string, any>
+  slack_message_ts?: string | null
+  slack_channel_id?: string | null
+  sprinto_submission_id?: string | null
+  sprinto_status?: string | null
+  tags: string[]
+  is_sensitive: boolean
+  retention_policy: Record<string, any>
+  created_at: string
+  collected_at: string
+  reviewed_at?: string | null
+  approved_at?: string | null
+  submitted_at?: string | null
 }
 
 export interface EvidenceSessionFilters {
