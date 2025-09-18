@@ -67,11 +67,11 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
   ]
 
   const commonQuestions = [
-    'Why is this step taking so long?',
-    'Can you search in different folders?',
-    'How do you decide which files to collect?',
-    'Can I modify the file patterns you're looking for?',
-    'What happens if you can't find the evidence?'
+    "Why is this step taking so long?",
+    "Can you search in different folders?",
+    "How do you decide which files to collect?",
+    "Can I modify the file patterns you're looking for?",
+    "What happens if you can't find the evidence?"
   ]
 
   return (
