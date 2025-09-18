@@ -171,7 +171,7 @@ export class ComplianceAgent {
     `
 
     const response = await llmRouter.generateResponse([
-      { role: 'system', content: 'You are an expert compliance evidence collection agent. Plan efficient and reliable evidence collection strategies.' },
+      { role: 'system', content: "You are an expert compliance evidence collection agent. Plan efficient and reliable evidence collection strategies." },
       { role: 'user', content: prompt }
     ], {
       provider: this.context.currentProvider,
@@ -372,7 +372,7 @@ export class ComplianceAgent {
     `
 
     const response = await llmRouter.generateResponse([
-      { role: 'system', content: 'You are an expert at analyzing user intent in compliance workflows.' },
+      { role: 'system', content: "You are an expert at analyzing user intent in compliance workflows." },
       { role: 'user', content: prompt }
     ], {
       provider: this.context.currentProvider,
@@ -415,7 +415,7 @@ export class ComplianceAgent {
     `
 
     const response = await llmRouter.generateResponse([
-      { role: 'system', content: 'You are a helpful compliance automation assistant. Answer questions about the evidence collection process.' },
+      { role: 'system', content: "You are a helpful compliance automation assistant. Answer questions about the evidence collection process." },
       { role: 'user', content: context }
     ], {
       provider: this.context.currentProvider,
