@@ -13,6 +13,7 @@ export type StepStatus = Database['public']['Enums']['step_status']
 export type ProviderType = Database['public']['Enums']['provider_type']
 
 export interface ProgressStep {
+  [key: string]: string | number | boolean | null | ProgressStep[] | Record<string, any> | undefined
   id: string
   step: number
   title: string
