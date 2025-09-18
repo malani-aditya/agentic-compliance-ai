@@ -43,7 +43,7 @@ export default function ChatInterface({ sessionId, onClose }: ChatInterfaceProps
         {
           id: '1',
           role: 'system',
-          content: 'Welcome! I'm your AI compliance assistant. I can help modify collection steps, explain my actions, and answer questions about the evidence collection process.',
+          content: "Welcome! I'm your AI compliance assistant. I can help modify collection steps, explain my actions, and answer questions about the evidence collection process.",
           timestamp: '2025-09-18T12:00:00Z'
         },
         {
