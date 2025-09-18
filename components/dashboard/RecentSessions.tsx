@@ -197,7 +197,11 @@ export default function RecentSessions() {
             </div>
             <div className="flex justify-between">
               <span>Duration:</span>
-              <span>{formatDuration(session.started_at, session.completed_at)}</span>
+              <span>
+                {session.started_at && session.completed_at
+                  ? formatDuration(session.started_at, session.completed_at)
+                  : "—"}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Provider:</span>
