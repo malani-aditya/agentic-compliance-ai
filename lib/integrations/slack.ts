@@ -126,7 +126,7 @@ class SlackIntegration {
         color: options.color || 'good',
         text: message,
         fields: options.fields || [],
-        ts: Math.floor(Date.now() / 1000)
+        ts: Math.floor(Date.now() / 1000).toString()
       }
 
       await this.client.chat.postMessage({

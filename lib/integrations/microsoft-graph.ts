@@ -83,7 +83,7 @@ class MicrosoftGraphIntegration {
         size: item.size || 0,
         lastModifiedDateTime: item.lastModifiedDateTime!,
         webUrl: item.webUrl!,
-        mimeType: item.file?.mimeType,
+        mimeType: item.file?.mimeType ?? undefined,
         downloadUrl: `https://graph.microsoft.com/v1.0/me/drive/items/${item.id}/content`
       }))
 
@@ -124,7 +124,7 @@ class MicrosoftGraphIntegration {
         size: item.size || 0,
         lastModifiedDateTime: item.lastModifiedDateTime!,
         webUrl: item.webUrl!,
-        mimeType: item.file?.mimeType,
+        mimeType: item.file?.mimeType ?? undefined,
         downloadUrl: `https://graph.microsoft.com/v1.0/me/drive/items/${item.id}/content`
       }))
     } catch (error) {

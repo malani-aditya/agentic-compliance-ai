@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['googleapis', '@microsoft/microsoft-graph-client', 'ws']
-  },
+  serverExternalPackages: ['googleapis', '@microsoft/microsoft-graph-client', 'ws'],
   env: {
     SUPABASE_URL: process.env.SUPABASE_URL,
     SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,

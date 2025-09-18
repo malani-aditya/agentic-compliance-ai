@@ -176,7 +176,7 @@ class LLMRouter {
 
     return {
       content: data.choices[0].message.content,
-      usage: data.usage,
+      usage: mapUsage(data.usage),
       model: data.model,
       provider: 'kimi'
     }
@@ -195,7 +195,7 @@ class LLMRouter {
 
     return {
       content: result.text,
-      usage: result.usage,
+      usage: mapUsage(result.usage as any),
       model: config.model,
       provider: 'openai'
     }
@@ -214,7 +214,7 @@ class LLMRouter {
 
     return {
       content: result.text,
-      usage: result.usage,
+      usage: mapUsage(result.usage as any),
       model: config.model,
       provider: 'anthropic'
     }
@@ -233,7 +233,7 @@ class LLMRouter {
 
     return {
       content: result.text,
-      usage: result.usage,
+      usage: mapUsage(result.usage as any),
       model: config.model,
       provider: 'google'
     }
@@ -244,7 +244,7 @@ class LLMRouter {
     const { generateText } = await import('ai')
 
     const result = await generateText({
-      model: groq(config.model || 'llama-3.3-70b-versatile'),
+      model: groq(config.model || 'llama-3.3-70b-versatile') as any,
       messages,
       temperature: config.temperature,
       maxTokens: config.max_tokens
@@ -252,7 +252,7 @@ class LLMRouter {
 
     return {
       content: result.text,
-      usage: result.usage,
+      usage: mapUsage(result.usage as any),
       model: config.model,
       provider: 'groq'
     }
@@ -281,7 +281,7 @@ class LLMRouter {
 
     return {
       content: data.choices[0].message.content,
-      usage: data.usage,
+      usage: mapUsage(data.usage),
       model: data.model,
       provider: 'deepseek'
     }
@@ -307,3 +307,22 @@ class LLMRouter {
 
 export const llmRouter = new LLMRouter()
 export default llmRouter
+
+// Map various provider/SDK usage formats to our unified usage shape
+function mapUsage(raw: any): { prompt_tokens: number; completion_tokens: number; total_tokens: number } | undefined {
+  try {
+    if (!raw) return undefined
+    const pRaw = (raw as any).prompt_tokens ?? (raw as any).promptTokens ?? (raw as any).inputTokens
+    const cRaw = (raw as any).completion_tokens ?? (raw as any).completionTokens ?? (raw as any).outputTokens
+    if (typeof pRaw === 'number' && typeof cRaw === 'number') {
+      const tRaw = (raw as any).total_tokens ?? (raw as any).totalTokens
+      const p = pRaw
+      const c = cRaw
+      const t = typeof tRaw === 'number' ? tRaw : p + c
+      return { prompt_tokens: p, completion_tokens: c, total_tokens: t }
+    }
+    return undefined
+  } catch {
+    return undefined
+  }
+}

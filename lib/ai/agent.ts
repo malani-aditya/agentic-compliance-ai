@@ -7,7 +7,9 @@ import {
   ProviderType,
   ComplianceCheck,
   EvidenceSession,
-  AgentMemory
+  AgentMemory,
+  StepStatus,
+  MemoryType
 } from '@/types/app.types'
 
 export interface AgentContext {
@@ -18,6 +20,9 @@ export interface AgentContext {
   userPreferences: Record<string, any>
   conversationHistory: LLMMessage[]
 }
+
+// Narrow type for memory search results returned by the RPC
+type SimilarMemory = Pick<AgentMemory, 'id' | 'memory_type' | 'check_type' | 'content' | 'success_rate'> & { similarity: number }
 
 export interface AgentTool {
   name: string
@@ -92,7 +97,7 @@ export class ComplianceAgent {
       },
       execute: async (params, context) => {
         return await this.searchMemory(params.query, {
-          memoryTypes: params.memory_types,
+          memoryTypes: params.memory_types as MemoryType[] | undefined,
           checkType: params.check_type
         })
       }
@@ -124,7 +129,7 @@ export class ComplianceAgent {
       // Search memory for past successful approaches
       const relevantMemories = await this.searchMemory(
         `Evidence collection for ${check.check_type} ${check.check_name}`,
-        { memoryTypes: ['procedural', 'episodic'], checkType: check.check_type }
+        { memoryTypes: ['procedural', 'episodic'] as MemoryType[], checkType: check.check_type }
       )
 
       // Generate collection strategy using LLM with memory context
@@ -137,7 +142,7 @@ export class ComplianceAgent {
 
   private async generateCollectionStrategy(
     check: ComplianceCheck,
-    memories: AgentMemory[]
+    memories: SimilarMemory[]
   ): Promise<CollectionStrategy> {
     const memoryContext = memories.map(m => ({
       type: m.memory_type,
@@ -309,11 +314,12 @@ export class ComplianceAgent {
         }
       }
     } catch (error) {
-      await this.updateSessionProgress(step.id, 'error', `Error: ${error.message}`)
+      const message = error instanceof Error ? error.message : String(error)
+      await this.updateSessionProgress(step.id, 'error', `Error: ${message}`)
 
       return { 
         success: false, 
-        error: error.message,
+        error: message,
         reasoning 
       }
     }
@@ -428,14 +434,14 @@ export class ComplianceAgent {
 
   private async searchMemory(
     query: string, 
-    options: { memoryTypes?: string[]; checkType?: string } = {}
-  ): Promise<AgentMemory[]> {
+    options: { memoryTypes?: MemoryType[]; checkType?: string } = {}
+  ): Promise<SimilarMemory[]> {
     // Generate embedding for the query
     const embedding = await llmRouter.generateEmbedding(query)
 
     // Search similar memories using pgvector
-    const { data: memories, error } = await supabaseAdmin.rpc('search_similar_memories', {
-      query_embedding: embedding,
+    const { data: memories, error } = await (supabaseAdmin as any).rpc('search_similar_memories', {
+      query_embedding: JSON.stringify(embedding),
       memory_types: options.memoryTypes,
       match_threshold: 0.7,
       match_count: 5
@@ -446,7 +452,7 @@ export class ComplianceAgent {
       return []
     }
 
-    return memories || []
+    return (memories as SimilarMemory[]) || []
   }
 
   private async storeMemory(memoryData: Partial<AgentMemory>): Promise<void> {
@@ -456,9 +462,9 @@ export class ComplianceAgent {
         JSON.stringify(memoryData.content)
       )
 
-      await supabaseAdmin.from('agent_memories').insert({
+      await (supabaseAdmin as any).from('agent_memories').insert({
         ...memoryData,
-        embedding,
+        embedding: JSON.stringify(embedding),
         created_by: this.context.userId
       })
     } catch (error) {
@@ -468,18 +474,18 @@ export class ComplianceAgent {
 
   private async updateSessionProgress(
     stepId: string, 
-    status: any, 
+    status: StepStatus, 
     message: string
   ): Promise<void> {
     // Update the progress step in the session
-    const { data: session } = await supabaseAdmin
+    const { data: session } = await (supabaseAdmin as any)
       .from('evidence_sessions')
       .select('progress_steps')
       .eq('id', this.context.sessionId)
       .single()
 
     if (session) {
-      const steps = session.progress_steps as ProgressStep[]
+      const steps = (session.progress_steps as ProgressStep[])
       const stepIndex = steps.findIndex(s => s.id === stepId)
 
       if (stepIndex >= 0) {
@@ -490,7 +496,7 @@ export class ComplianceAgent {
           timestamp: new Date().toISOString()
         }
 
-        await supabaseAdmin
+        await (supabaseAdmin as any)
           .from('evidence_sessions')
           .update({ 
             progress_steps: steps,

@@ -1,8 +1,8 @@
 import { Database } from './database.types'
 
 export type ComplianceCheck = Database['public']['Tables']['compliance_checks']['Row']
-export type EvidenceSession = Database['public']['Tables']['evidence_sessions']['Row']
-export type EvidenceItem = Database['public']['Tables']['evidence_items']['Row']
+export type EvidenceSessionRow = Database['public']['Tables']['evidence_sessions']['Row']
+export type EvidenceItemRow = Database['public']['Tables']['evidence_items']['Row']
 export type AgentMemory = Database['public']['Tables']['agent_memories']['Row']
 export type Profile = Database['public']['Tables']['profiles']['Row']
 

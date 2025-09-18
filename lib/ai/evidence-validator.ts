@@ -69,13 +69,14 @@ class EvidenceValidator {
       return validation
     } catch (error) {
       console.error('Evidence validation error:', error)
+      const message = error instanceof Error ? error.message : String(error)
       
       return {
         is_valid: false,
         validation_score: 0,
         issues: [{
           type: 'error',
-          message: `Validation failed: ${error.message}`,
+          message: `Validation failed: ${message}`,
           suggestion: 'Please check if the file is accessible and not corrupted'
         }],
         metadata_completeness: 0
@@ -98,7 +99,8 @@ class EvidenceValidator {
         path: filePath
       }
     } catch (error) {
-      throw new Error(`Cannot access file: ${error.message}`)
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`Cannot access file: ${message}`)
     }
   }
 
@@ -240,9 +242,10 @@ class EvidenceValidator {
       await this.validateFrameworkSpecificContent(content, rules, validation)
 
     } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
       validation.issues.push({
         type: 'warning',
-        message: `Could not analyze file content: ${error.message}`,
+        message: `Could not analyze file content: ${message}`,
         field: 'content',
         suggestion: 'Manual review may be required'
       })
@@ -350,7 +353,8 @@ class EvidenceValidator {
           }
       }
     } catch (error) {
-      throw new Error(`Cannot read file content: ${error.message}`)
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`Cannot read file content: ${message}`)
     }
   }
 
@@ -375,7 +379,8 @@ class EvidenceValidator {
       const fileBuffer = await fs.readFile(filePath)
       return createHash('sha256').update(fileBuffer).digest('hex')
     } catch (error) {
-      throw new Error(`Cannot calculate file hash: ${error.message}`)
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`Cannot calculate file hash: ${message}`)
     }
   }
 
