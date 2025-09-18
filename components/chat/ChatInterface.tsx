@@ -49,7 +49,7 @@ export default function ChatInterface({ sessionId, onClose }: ChatInterfaceProps
         {
           id: '2',
           role: 'assistant',
-          content: 'I've started collecting evidence for your SOC 2 compliance checks. Currently scanning the Google Drive folders for access control documents.',
+          content: "I've started collecting evidence for your SOC 2 compliance checks. Currently scanning the Google Drive folders for access control documents.",
           timestamp: '2025-09-18T12:01:00Z',
           metadata: {
             thinking: 'User has 3 compliance checks selected. Starting with access control as it has highest priority.',
@@ -100,7 +100,7 @@ export default function ChatInterface({ sessionId, onClose }: ChatInterfaceProps
       const errorMessage: ChatMessageType = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'I apologize, but I encountered an error processing your request. Please try again.',
+        content: "I apologize, but I encountered an error processing your request. Please try again.",
         timestamp: new Date().toISOString()
       }
 
@@ -114,22 +114,22 @@ export default function ChatInterface({ sessionId, onClose }: ChatInterfaceProps
     const input = userInput.toLowerCase()
 
     if (input.includes('stop') || input.includes('pause')) {
-      return 'I'll pause the current collection step. You can resume it anytime from the interface. Is there anything specific you'd like me to modify before we continue?'
+      return "I'll pause the current collection step. You can resume it anytime from the interface. Is there anything specific you'd like me to modify before we continue?"
     }
 
     if (input.includes('backup') || input.includes('alternative')) {
-      return 'I'll check the backup folders for evidence. I've learned that backup locations often contain the files we need when primary folders are empty. Updating my search strategy now.'
+      return "I'll check the backup folders for evidence. I've learned that backup locations often contain the files we need when primary folders are empty. Updating my search strategy now."
     }
 
     if (input.includes('explain') || input.includes('why')) {
-      return 'I'm currently scanning Google Drive folders based on the collection requirements for your SOC 2 checks. I prioritize locations where I've successfully found evidence before, and I use file patterns that match your compliance framework requirements.'
+      return "I'm currently scanning Google Drive folders based on the collection requirements for your SOC 2 checks. I prioritize locations where I've successfully found evidence before, and I use file patterns that match your compliance framework requirements."
     }
 
     if (input.includes('faster') || input.includes('speed')) {
-      return 'I can optimize the collection by running parallel searches across multiple folders and focusing on the most likely file locations first. Would you like me to enable aggressive collection mode?'
+      return "I can optimize the collection by running parallel searches across multiple folders and focusing on the most likely file locations first. Would you like me to enable aggressive collection mode?"
     }
 
-    return 'I understand your request. I'll adjust my approach accordingly and remember this preference for future collections. Is there anything else you'd like me to modify in the current process?'
+    return "I understand your request. I'll adjust my approach accordingly and remember this preference for future collections. Is there anything else you'd like me to modify in the current process?"
   }
 
   const handleQuickAction = (action: string) => {

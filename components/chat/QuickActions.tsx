@@ -28,7 +28,7 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
       id: 'explain',
       label: 'Explain Current Step',
       icon: QuestionMarkCircleIcon,
-      action: 'Can you explain what you're doing in the current step?',
+      action: "Can you explain what you're doing in the current step?",
       variant: 'secondary' as const,
       color: 'text-blue-600'
     },
@@ -36,7 +36,7 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
       id: 'backup',
       label: 'Check Backup Folders',
       icon: ArrowPathIcon,
-      action: 'Please check backup folders if you can't find the files',
+      action: "Please check backup folders if you can't find the files",
       variant: 'secondary' as const,
       color: 'text-green-600'
     },
@@ -60,7 +60,7 @@ export default function QuickActions({ onAction }: QuickActionsProps) {
       id: 'issues',
       label: 'Report Issue',
       icon: ExclamationTriangleIcon,
-      action: 'I'm seeing an issue with the current collection step',
+      action: "I'm seeing an issue with the current collection step",
       variant: 'ghost' as const,
       color: 'text-red-600'
     }

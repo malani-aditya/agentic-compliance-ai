@@ -386,7 +386,7 @@ export class ComplianceAgent {
       return { type: 'general_question' }
     }
   }
-
+  
   private async handleStepModification(intent: any): Promise<string> {
     // Implementation for modifying collection steps based on user input
     return "I'll update the collection step as requested. The changes will be applied to future similar collections as well."
