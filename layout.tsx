@@ -4,7 +4,7 @@ import Sidebar from '@/components/dashboard/Sidebar'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function DashboardLayout({
-  children,Providers.tsx
+  children,
 }: {
   children: React.ReactNode
 }) {
